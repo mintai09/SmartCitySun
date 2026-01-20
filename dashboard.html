@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>울산 햇빛지도 - 태양광 발전량 및 ESG 탄소 저감 대시보드</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🌞 울산 햇빛지도 - 태양광 발전량 및 ESG 탄소 저감 대시보드</h1>
+            <p class="subtitle">건물별 실시간 태양광 발전량 예측과 CO₂ 저감 효과 산출</p>
+        </header>
+
+        <!-- Search Section -->
+        <section class="search-section">
+            <div class="search-container">
+                <input type="text" id="addressInput" placeholder="울산시 건물 주소를 입력하세요 (예: 울산시 남구 삼산로 100)" class="search-input">
+                <button onclick="searchAddress()" class="search-button">검색</button>
+            </div>
+            <div class="panel-config">
+                <label>패널 용량 (kW): <input type="number" id="panelCapacity" value="10" min="1" max="100"></label>
+                <label>패널 효율 (%):
+                    <select id="panelEfficiency">
+                        <option value="20">단결정 (20%)</option>
+                        <option value="17" selected>다결정 (17%)</option>
+                        <option value="15">박막형 (15%)</option>
+                    </select>
+                </label>
+                <button onclick="calculateGeneration()" class="calculate-button">발전량 계산</button>
+            </div>
+        </section>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Map Section -->
+            <section class="map-section">
+                <h2>📍 울산시 햇빛지도 (일사량 분포)</h2>
+                <div id="map" class="map-container">
+                    <div class="map-placeholder">
+                        <div class="building-marker selected" style="top: 40%; left: 30%;" data-name="울산시청">
+                            <span class="marker-label">울산시청</span>
+                        </div>
+                        <div class="building-marker" style="top: 60%; left: 50%;" data-name="남구 체육관">
+                            <span class="marker-label">남구 체육관</span>
+                        </div>
+                        <div class="building-marker" style="top: 30%; left: 70%;" data-name="울산대학교">
+                            <span class="marker-label">울산대학교</span>
+                        </div>
+                        <div class="building-marker" style="top: 70%; left: 35%;" data-name="현대자동차">
+                            <span class="marker-label">현대자동차</span>
+                        </div>
+                        <div class="solar-legend">
+                            <h4>일사량 (kWh/m²/년)</h4>
+                            <div class="legend-scale">
+                                <div class="legend-item"><span style="background: #ff4444;"></span> 높음 (1400+)</div>
+                                <div class="legend-item"><span style="background: #ffaa00;"></span> 중간 (1200-1400)</div>
+                                <div class="legend-item"><span style="background: #ffee00;"></span> 보통 (1000-1200)</div>
+                                <div class="legend-item"><span style="background: #88ff00;"></span> 낮음 (&lt;1000)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- KPI Section -->
+            <section class="kpi-section">
+                <h2>📊 예상 발전량 및 탄소 저감 효과</h2>
+                <div class="kpi-cards">
+                    <div class="kpi-card primary">
+                        <div class="kpi-icon">⚡</div>
+                        <div class="kpi-content">
+                            <h3>연간 예상 발전량</h3>
+                            <p class="kpi-value" id="annualGeneration">12,450</p>
+                            <p class="kpi-unit">kWh/년</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card success">
+                        <div class="kpi-icon">🌱</div>
+                        <div class="kpi-content">
+                            <h3>연간 CO₂ 저감량</h3>
+                            <p class="kpi-value" id="co2Reduction">5.51</p>
+                            <p class="kpi-unit">톤 CO₂/년</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card info">
+                        <div class="kpi-icon">💰</div>
+                        <div class="kpi-content">
+                            <h3>연간 전기료 절감</h3>
+                            <p class="kpi-value" id="costSaving">1,867,500</p>
+                            <p class="kpi-unit">원/년</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card warning">
+                        <div class="kpi-icon">🌳</div>
+                        <div class="kpi-content">
+                            <h3>소나무 식재 효과</h3>
+                            <p class="kpi-value" id="treeEquivalent">834</p>
+                            <p class="kpi-unit">그루</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="building-info">
+                    <h3>선택된 건물 정보</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">건물명:</span>
+                            <span class="info-value" id="buildingName">울산시청</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">위치:</span>
+                            <span class="info-value" id="buildingAddress">울산광역시 남구 삼산로 100</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">옥상 면적:</span>
+                            <span class="info-value" id="roofArea">850 m²</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">평균 일사량:</span>
+                            <span class="info-value" id="solarRadiation">1,350 kWh/m²/년</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Trend Chart Section -->
+            <section class="trend-section">
+                <h2>📈 월별 발전량 및 탄소 저감 추이</h2>
+                <div class="chart-container">
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+                <div class="prediction-notice">
+                    <span class="notice-icon">ℹ️</span>
+                    <p>AI 예측모델(DNN+LSTM 앙상블)을 활용한 24-48시간 발전량 예측 기능 제공</p>
+                </div>
+            </section>
+
+            <!-- Policy Section -->
+            <section class="policy-section">
+                <h2>🏛️ 공공시설 태양광 설치 우선순위</h2>
+                <div class="priority-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>순위</th>
+                                <th>시설명</th>
+                                <th>위치</th>
+                                <th>예상 발전량<br>(kWh/년)</th>
+                                <th>CO₂ 저감량<br>(톤/년)</th>
+                                <th>우선순위 점수</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="rank-1">
+                                <td>1</td>
+                                <td>울산시청</td>
+                                <td>남구 삼산로 100</td>
+                                <td>12,450</td>
+                                <td>5.51</td>
+                                <td><span class="score high">95</span></td>
+                            </tr>
+                            <tr class="rank-2">
+                                <td>2</td>
+                                <td>울산문화예술회관</td>
+                                <td>남구 번영로 200</td>
+                                <td>11,800</td>
+                                <td>5.22</td>
+                                <td><span class="score high">92</span></td>
+                            </tr>
+                            <tr class="rank-3">
+                                <td>3</td>
+                                <td>울산대공원 체육관</td>
+                                <td>남구 대공원로 94</td>
+                                <td>10,200</td>
+                                <td>4.52</td>
+                                <td><span class="score medium">88</span></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>동구청</td>
+                                <td>동구 봉수로 155</td>
+                                <td>9,800</td>
+                                <td>4.34</td>
+                                <td><span class="score medium">85</span></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>북구 복합문화센터</td>
+                                <td>북구 산업로 1010</td>
+                                <td>8,900</td>
+                                <td>3.94</td>
+                                <td><span class="score medium">82</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="policy-summary">
+                    <h3>📋 정책 활용 시나리오</h3>
+                    <ul>
+                        <li><strong>예산 효율성:</strong> 상위 5개 시설 설치 시 연간 53,150 kWh 생산, 23.53톤 CO₂ 감축</li>
+                        <li><strong>ESG 기여:</strong> 울산시 전체 공공시설 탄소중립 목표 달성 지원</li>
+                        <li><strong>확산 전략:</strong> 시민 참여형 태양광 보급사업 연계 추진</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>💡 본 서비스는 기상청 일사량 데이터, 한국전력거래소 발전량 데이터, 한국에너지기술연구원 예측 API를 활용합니다.</p>
+            <p>🔬 AI 예측모델: DNN+LSTM 앙상블 + 전이학습(Transfer Learning) 적용</p>
+            <p>📊 전력배출계수: 0.443 kgCO₂/kWh (환경부 기준)</p>
+        </footer>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

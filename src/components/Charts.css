@@ -1,0 +1,271 @@
+.charts-section {
+  margin-bottom: 30px;
+}
+
+.chart-container {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+}
+
+.chart-title {
+  color: #2c3e50;
+  font-size: 1.6em;
+  font-weight: 800;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #667eea;
+}
+
+.chart-wrapper {
+  height: 450px;
+  margin-bottom: 20px;
+}
+
+.chart-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 2px solid #f0f0f0;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.chart-legend-custom {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95em;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.legend-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.chart-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #7f8c8d;
+  font-size: 0.9em;
+  font-style: italic;
+}
+
+.note-icon {
+  font-size: 1.2em;
+}
+
+/* 예측 패널 */
+.prediction-panel {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.prediction-title {
+  color: #2c3e50;
+  font-size: 1.5em;
+  font-weight: 800;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.prediction-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.prediction-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 25px;
+  border-radius: 12px;
+  display: flex;
+  gap: 15px;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.prediction-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: #667eea;
+}
+
+.prediction-icon {
+  font-size: 2.5em;
+  line-height: 1;
+}
+
+.prediction-content {
+  flex: 1;
+}
+
+.prediction-content h4 {
+  color: #2c3e50;
+  font-size: 1.1em;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.prediction-content p {
+  color: #7f8c8d;
+  font-size: 0.9em;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.prediction-stats {
+  display: flex;
+  gap: 10px;
+}
+
+.prediction-stats .stat {
+  background: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: 700;
+  color: #667eea;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 예측 특징 */
+.prediction-features {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  border-left: 5px solid #4caf50;
+}
+
+.features-title {
+  color: #2e7d32;
+  font-size: 1.2em;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.features-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.feature-tag {
+  background: white;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #2e7d32;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+}
+
+.feature-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: #4caf50;
+  color: white;
+}
+
+/* 데이터 출처 */
+.data-sources {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  padding: 25px;
+  border-radius: 12px;
+  border-left: 5px solid #ff9800;
+}
+
+.sources-title {
+  color: #e65100;
+  font-size: 1.2em;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.sources-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sources-list li {
+  padding: 10px 0;
+  color: #e65100;
+  font-size: 0.95em;
+  display: flex;
+  align-items: center;
+  line-height: 1.6;
+}
+
+.sources-list li::before {
+  content: '📌';
+  display: inline-block;
+  width: 30px;
+  margin-right: 10px;
+  font-size: 1.2em;
+}
+
+@media (max-width: 1200px) {
+  .prediction-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .chart-container,
+  .prediction-panel {
+    padding: 20px;
+  }
+
+  .chart-title,
+  .prediction-title {
+    font-size: 1.3em;
+  }
+
+  .chart-wrapper {
+    height: 350px;
+  }
+
+  .chart-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .prediction-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .prediction-card {
+    padding: 20px;
+  }
+
+  .features-tags {
+    gap: 8px;
+  }
+
+  .feature-tag {
+    font-size: 0.85em;
+    padding: 8px 14px;
+  }
+}
